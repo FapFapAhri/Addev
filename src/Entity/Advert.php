@@ -44,6 +44,16 @@ class Advert
      */
     private $author;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastModified;
+
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $contractType;
+
     public function __construct()
     {
         $this->jobRequests = new ArrayCollection();
@@ -130,6 +140,30 @@ class Advert
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getLastModified(): ?\DateTimeInterface
+    {
+        return $this->lastModified;
+    }
+
+    public function setLastModified(?\DateTimeInterface $lastModified): self
+    {
+        $this->lastModified = $lastModified;
+
+        return $this;
+    }
+
+    public function getContractType(): ?string
+    {
+        return $this->contractType;
+    }
+
+    public function setContractType(string $contractType): self
+    {
+        $this->contractType = $contractType;
 
         return $this;
     }

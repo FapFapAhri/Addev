@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %} 
+{% block body %}
+<body class="color">
+
+		<div class="intro py-4 py-lg-8 position-relative text-white bg-h1">
+				<div class="bg-overlay-primary">
+					<img src="{{ asset('images/bleu.jpg') }}" class="img-fluid img-cover" alt="Robust UI Kit" style=" width: 100%; display: block;" >
+				</div>
+					<div class="intro-content py-6 text-center">
+						<div class="container">
+							<div class="row align-items-center">
+								<div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
+									<h1 class="my-3 display-4 d-none d-lg-inline-block">Liste des utilisateurs</h1>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- slogan -->
+				<div class="jumbotron">
+						<div class="container">
+							<h2>Voici la liste des utilisateurs</h2>
+							<p>vois ce que tu veut modifier </p>
+			
+			<!--
+							<div id="scroll" style="position: fixed; top: 90%; right: 5%;" class="clicked">
+								<span class="">↓</span>
+							</div>
+			-->
+						</div>
+					</div>
+
+<div class="container">
+
+
+
+	
+
+
+
+	{% if members is null %}
+
+	<a style="color:red" href="{{path('admin')}}"> utilisateurs inexistants (retour)</a>
+
+	{% else %}
+	<table class="table table-striped table-dark">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Nom</th>
+				<th scope="col">Prénom</th>
+				<th scope="col">Email</th>
+				<th scope="col">Date D'inscription</th>
+				<th scope="col">Dernière connexion</th>
+				<th scope="col">Adresse IP</th>
+				<th scope="col">Niveau Membre</th>
+				<th scope="col">Activation compte</th>
+				<th scope="col"> [Action]</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for member in members %}
+			<tr>
+				<th scope="row">{{member.id}}</th>
+				<td>{{member.name}}</td>
+				<td>{{member.firstname}}</td>
+				<td>{{member.email}}</td>
+				<td>{{member.registerDate|date('d-m-Y')}}</td>
+				<td>{{ member.lastConnection is empty ? "" : member.lastConnection|date("d/m/Y H:i:s") }}</td>
+				<td>{{member.registerip}}</td>
+				<td>{% if member.adminLevel == 1 %} Administrateur {% else %} Membre {% endif %}</td>
+				<td>{% if member.active == 1 %} Activé {% else %} Désactivé {% endif %}</td>
+				<td>
+					<!-- Button trigger modal -->
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{member.id}}">
+						Modifier statut
+					</button>
+				</td>
+			</tr>
+			<!-- Modal -->
+
+			<div  class="modal fade" id="exampleModal{{member.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<form action="{{ path('api_admineditor', {id: member.id} ) }}" method="POST">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">[ {{member.name}} {{member.firstname}} ] -- Utilistateur n°{{member.id}} </h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+
+								<div class="input-group mb-3">
+									<div class="input-group-prepend">
+										<label class="input-group-text" for="status{{member.id}}">Activation compte</label>
+									</div>
+									<select name="status" class="custom-select" id="status{{member.id}}">
+										<option {% if member.active == 0 %}selected {% endif %}value="0">Désactivé</option>
+										<option {% if member.active == 1 %}selected {% endif %}value="1">Activé</option>
+									</select>
+								</div>
+
+								<div class="input-group mb-3">
+									<div class="input-group-prepend">
+										<label class="input-group-text" for="level{{member.id}}">Niveau utilisateur</label>
+									</div>
+									<select name="level" class="custom-select" id="level{{member.id}}">
+										<option {% if member.adminLevel == 0 %}selected {% endif %}value="0">Membre--niveau 1</option>
+										<option {% if member.adminLevel == 1 %}selected {% endif %}value="1">Administrateur--niveau 2</option>
+									</select>
+								</div>
+
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+								<button data-id="{{member.id}}" data-link="{{ path('api_admineditor', {id: member.id} ) }}" data-nameuser="{{member.name}} {{member.firstname}}" data-level="{{member.adminLevel}}" data-state="{{member.active}}" type="submit" class="btn btn-primary confirm admin-editor">Confirmer les changements?</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			{% endfor %}
+		</tbody>
+	</table>
+
+
+
+
+
+
+	{# {% for member in members %} {% endfor %} #} {% endif %}
+</body>
+	 {% endblock %} 
+	
+	 {% block javascripts %}
+	<script src="{{ asset('js/admineditor.js') }}"></script> {% endblock %}

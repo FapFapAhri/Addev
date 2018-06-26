@@ -2,6 +2,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    google_private_token: '6LeR8VYUAAAAAO5Kf_ZRNZMmzvGT6TxO4x6ef2oZ'
+    google_public_token: '6LeR8VYUAAAAAKC-NPzClyicVjsU2cgVrBoMSycN'
 
 services:
     # default configuration for services in *this* file
@@ -23,6 +25,8 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
-
+        
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\Recaptcha:
+        arguments: ['%google_private_token%']

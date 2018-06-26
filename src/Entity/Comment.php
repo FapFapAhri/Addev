@@ -16,12 +16,6 @@ class Comment
      */
     private $id;
 
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $comment;
-
     /**
      * @ORM\Column(type="float", nullable=true)
      */
@@ -39,6 +33,11 @@ class Comment
      */
     private $targetingUser;
 
+    /**
+     * @ORM\Column(type="string", length=30000, nullable=true)
+     */
+    private $comment;
+
 
     public function getId()
     {
@@ -46,17 +45,6 @@ class Comment
     }
 
 
-    public function getComment(): ?int
-    {
-        return $this->comment;
-    }
-
-    public function setComment(int $comment): self
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
 
     public function getMark(): ?float
     {
@@ -90,6 +78,18 @@ class Comment
     public function setTargetingUser(?User $targetingUser): self
     {
         $this->targetingUser = $targetingUser;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

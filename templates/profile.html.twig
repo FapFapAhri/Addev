@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %} 
+{% block body %} 
+<body class="color">
+
+{# affiche les info de la personne connectee #}
+
+
+<div class="intro py-4 py-lg-8 position-relative text-white bg-h1">
+    <div class="bg-overlay-primary">
+        <img src="{{ asset('images/bleu.jpg') }}" class="img-fluid img-cover" alt="Robust UI Kit" style="width: 100%; display: block;">
+    </div>
+    <div class="intro-content py-6 text-center">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
+                    <h1 class="my-3 display-4 d-none d-lg-inline-block">Profil de {{ app.session.get('account').name }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- slogan -->
+<div class="jumbotron jumbotron2">
+    <div class="container">
+        <h2>Votre profile</h2>  
+    </div>
+</div>
+
+
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <div class="card mb-4 mt-5 box-shadow">
+                    <div class="col-lg-12" id="profil">
+                        <img class="rounded-circle" src="{{ asset('images/einstein.jpeg')}}" alt="Generic placeholder image" width="140" height="140" align-content="center">
+                        <label for="nom"><h2>Présentation</h2>
+                <p>nom: {{ app.session.get('account').name}}</p> 
+                <p>prénom: {{ app.session.get('account').firstname}}</p> 
+                <p>adresse mail: {{ app.session.get('account').email}}</p>
+                <p>Inscrit le: {{ app.session.get('account').registerDate|date('d-m-Y') }}</p>
+            </label>
+                    </div>
+                    <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-see">Consulter</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Modifier</button>
+                        </div>
+                    <small class="text-muted"></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+    {% endblock %} 
+
+    {% block javascript %}{% endblock %}

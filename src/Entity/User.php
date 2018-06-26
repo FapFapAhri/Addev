@@ -83,6 +83,11 @@ class User
      */
     private $commentsBack;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $registerDate;
+
     public function __construct()
     {
         $this->jobRequests = new ArrayCollection();
@@ -324,6 +329,18 @@ class User
                 $commentsBack->setTargetingUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRegisterDate(): ?\DateTimeInterface
+    {
+        return $this->registerDate;
+    }
+
+    public function setRegisterDate(\DateTimeInterface $registerDate): self
+    {
+        $this->registerDate = $registerDate;
 
         return $this;
     }

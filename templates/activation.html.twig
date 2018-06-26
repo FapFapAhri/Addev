@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+   
+    <h1>Activation du compte</h1>
+    <div class="alert alert-success" role="alert">
+           Le compte a bien été activé !
+          
+        </div>
+        <div class="alert alert-warning" role="alert">
+                Ceci est une simulation d'activation par mail. Normalement le client ne verra jamais cette page
+                et reçoit un mail de confirmation avec un lien de confirmation.
+               
+             </div>
+        <a href="{{ path('login') }}">Aller à la Connexion </a>
+
+
+{% endblock %}
+
+
+{% block javascript %}{% endblock %}

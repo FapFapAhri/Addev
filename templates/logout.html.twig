@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<body class="color">
+<div class="intro py-4 py-lg-8 position-relative text-white">
+        <div class="bg-overlay-primary">
+            <img src="{{ asset('images/bleu.jpg') }}" class="img-fluid img-cover" alt="Robust UI Kit" style=" width: 100%; display: block;" >
+        </div>
+        <div class="intro-content py-6 text-center">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
+                        <h1 class="my-3 display-4 d-none d-lg-inline-block">Deconnexion</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+<!-- slogan -->
+<div class="jumbotron">
+        <div class="container">
+            <h2>Vous etes bien deconnecté</h2>
+       
+
+<!--
+            <div id="scroll" style="position: fixed; top: 90%; right: 5%;" class="clicked">
+                <span class="">↓</span>
+            </div>
+-->
+        </div>
+    </div>
+
+{# message de succes #}
+{% if success is defined %}
+
+        <div class="alert alert-success" role="alert">
+            {{ success }}
+        </div>
+            <a href="{{ path('home') }}" class="btn btn-primary btn-retour">Retour à l'accueil</a>
+            
+{% endif %}        
+</body>
+{% endblock %}
+
+
+{% block javascript %}{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<body class="color">
+
+<div class="intro py-4 py-lg-8 position-relative text-white">
+        <div class="bg-overlay-primary">
+            <img src="{{ asset('images/bleu.jpg') }}" class="img-fluid img-cover" alt="Robust UI Kit" style=" width: 100%; display: block;" >
+        </div>
+        <div class="intro-content py-6 text-center">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
+                        <h1 class="my-3 display-4 d-none d-lg-inline-block">Connexion</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="jumbotron">
+            <!-- <div class="container">
+                <h2></h2>
+             </div> -->
+        </div>
+   <div class="container text-center">
+
+
+   {# si succes n'est pas deffinit #}
+    {% if success is not defined %}
+    
+    {# formulaire #}
+
+    <form class="form-signin" action="{{ path('api_login') }}" method="POST">
+            <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
+            <label for="inputEmail"  class="sr-only">Email</label>
+            <input id="inputEmail" class="form-control" name="email" placeholder="email" required="" autofocus="" type="email">
+            <p></p>
+            <label for="inputPassword" class="sr-only">Mot de passe</label>
+            <input id="inputPassword" class="form-control" name="password" placeholder="mot de passe" required="" type="password">
+            <div class="checkbox mb-3">
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Connexion</button>
+            <p class="mt-5 mb-3 text-muted">© 2018</p>
+          </form>
+
+    
+    {% endif %}
+    {# message d'erreur #}
+    {% if errors is defined %}
+    
+        {% for error in errors %}
+        <div class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+        {% endfor %}
+
+    {% endif %}
+</div>
+    
+    {# message de succes #}
+    {% if success is defined %}
+    <div class="alert alert-success" role="alert">
+            {{ success }}
+          </div>
+        
+          <a href="{{ path('adverts') }}" class="btn btn-primary btn-retour">Retour aux annonces</a>
+    {% endif %}
+</body>
+{% endblock %}
+
+
+{% block javascript %}{% endblock %}
+
+   
+
