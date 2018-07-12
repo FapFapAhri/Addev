@@ -4,3 +4,4 @@ twig:
     strict_variables: '%kernel.debug%'
     globals :
         google_token: '%google_public_token%'
+        uploaded_file_max_size: '%uploaded_file_max_size%'

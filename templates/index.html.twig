@@ -1,126 +1,114 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} {% block h1 %}Adopte un developpeur{% endblock %} {% block title %}Adopte un developpeur{% endblock %} {% block body %}
 
-{% block body %}
-<body class="color">
-	{% block header%}
-	<!-- titre de la page        -->
-
-
-	<div class="intro py-4 py-lg-8 position-relative text-white bg-h1">
-			<div class="bg-overlay-primary">
-				<img src="{{ asset('images/bleu.jpg') }}" class="img-fluid img-cover" alt="Robust UI Kit" style=" width: 100%; display: block;">
-			</div>
-				<div class="intro-content py-6 text-center">
-					<div class="container">
-						<div class="row align-items-center">
-							<div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
-								<h1 class="my-3 display-4 d-none d-lg-inline-block">Adopte un developpeur</h1>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		
-
-    
+<div aria-label="breadcrumb">
+    <ol class="breadcrumb mt-0">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+    </ol>
+</div>
 
 <!-- slogan -->
-        <div class="jumbotron">
-            <div class="container">
-                <h2>Le site de rencontre entre developpeur et entreprise</h2>
-                <p>Vous avez un projet et vous ne connaissez rien à "l'informatique"? Ce site est pour vous !</p>
+<div class="jumbotron">
 
-<!--
-                <div id="scroll" style="position: fixed; top: 90%; right: 5%;" class="clicked">
-                    <span class="">↓</span>
-                </div>
--->
-            </div>
-        </div>
+    <h2>Le site de rencontre entre developpeur et entreprise</h2>
+    <p class="soustext">Vous avez un projet et vous ne connaissez rien à "l'informatique"? Ce site est pour vous !</p>
+
+</div>
 <!-- fin de la partie haut de la page -->
-   		
-	{% endblock %}
+
+
 
 <!-- les logos des premieres languages informatique -->
-<div class="container-logo">
+<div class="container-logo row">
 
-		<img  src="images/html.png" alt="logo-html" />
-		<img src="images/js.png" alt="logo-js" />
-		<img src="images/css.png" alt="logo-css" />
-	
-	</div>
+    <img src="{{ asset('images/html.png') }}" alt="logo-html" />
+    <img src="{{ asset('images/js.png') }}" alt="logo-js" />
+    <img src="{{ asset('images/css.png') }}" alt="logo-css" />
+
+</div>
 
 
 <!-- les boxes client et developpeurs avec boutons d'inscription -->
-<div class="container">
-<div class="card-deck mb-3 text-center">
-	<div class="card mb-4 box-shadow">
-	  <div class="card-header">
-		<h4 class="my-0 font-weight-normal">Je suis Client</h4>
-	  </div>
-	  <div class="card-body">
-		<ul class="list-unstyled mt-3 mb-4">
-		  <li>blablabla</li>
-		  <li>blablabla</li>
-		  <li>blablabla</li>
-		  <li>blablabla</li>
-		</ul>
-		<button type="button" class="btn btn-lg btn-block btn-outline-primary">Je m'inscris</button>
-	  </div>
-	</div>
-	<div class="card mb-4 box-shadow">
-	  <div class="card-header">
-		<h4 class="my-0 font-weight-normal">Je suis Developpeur</h4>
-	  </div>
-	  <div class="card-body">
-		<ul class="list-unstyled mt-3 mb-4">
-		  <li>blablabla</li>
-		  <li>blablabla</li>
-		  <li>blablabla</li>
-		  <li>blablabla</li>
-		</ul>
-		 <button type="button" class="btn btn-lg btn-block btn-outline-primary">Je m'inscris</button>
-	  </div>
-	</div>
-  </div>
+{% if session.get('account') is null %}
+<div class="card-deck mb-3 text-center row">
+
+    <div class="col-10 offset-1 col-md-5 offset-md-1">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Client</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>Si vous est client ou entreprise, cherchant un developpeur pour vous aider a realiser votre projet, inscrivez vous ici</li>
+
+                </ul>
+                <div class="row d-flex justify-content-center">
+                    <a href="{{ path('register') }}" class="btn btn-lg btn-block btn-outline-primary">Je m'inscris</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-10 offset-1 col-md-5 offset-md-0">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Developpeur</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>Si vous est un developpeur, cherchant un CDD, CDI, un post interim ou un projet freelance, inscrivez vous ici</li>
+
+                </ul>
+                <a href="{{ path('register') }}" class="btn btn-lg btn-block btn-outline-primary">Je m'inscris</a>
+            </div>
+        </div>
+    </div>
 </div>
+{% endif %}
 
 <!-- trois boxes avec les dernieres annonces -->
 
 <div class="album py-5 bg-light">
-	<div class="container">
-	<h4>Les dernières annonces:</h4>
-	
 
-	<div class="row">
-{% for advert in lastThreeAd %}
-
-			<div class="col-md-4">
-				<div class="card mb-4 box-shadow">
-					<img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="images/Technologie.jpg" data-holder-rendered="true">
-					<div class="card-body">
-							<p class="card-text">Titre: {{advert.title}}</p>
-							<p class="card-text" id="height-max">Description: {{advert.content}}</p>
-						<div class="d-flex justify-content-between align-items-center">
-							<div class="btn-group">
-								<a href="{{ path('advert', { id : advert.id }) }}"  class="btn btn-sm btn-outline-secondary">Voir l'annonce</a>
-								{# <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> #}
-							</div>
-							<small class="text-muted">{{ advert.postDate|diff('%h:%i:%S %d-%m-%Y') }}</small>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			{% endfor %}
-		</div>
+    <h4>Les dernières annonces:</h4>
 
 
+    <div class="row">
+        <div class="col-10 offset-1">
+            <div class="row">
+                {% if lastThreeAd is defined %} {% for advert in lastThreeAd %}
+
+                <div class="col-md">
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="{{ asset('images/Technologie.jpg') }}" data-holder-rendered="true">
+                        <div class="card-body">
+                            <p class="card-text">Titre: {{advert.title}}</p>
+                            <p class="card-text" id="height-max">Description: {{advert.content}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="{{ path('advert', { id : advert.id }) }}" class="btn btn-sm btn-outline-secondary">Voir l'annonce</a>
+                                </div>
+                                <small class="text-muted">{{ advert.postDate|diff('%h:%i:%S %d-%m-%Y') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %} {% else %}
+
+                <div class="col-12 alert alert-danger" role="alert">
+                    Aucune annonce trouvée
+                </div>
+
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
 
 
 
-</body>
 
+
+
+
+</div>
 {% endblock %}

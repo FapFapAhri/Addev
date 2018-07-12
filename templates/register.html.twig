@@ -1,38 +1,60 @@
 {% extends 'base.html.twig' %}
-
+{% block h1 %}Inscription{% endblock %} {% block title %}Inscription{%
+endblock %} 
 {% block body %}
 
-<body class="color">
-
-<div class="intro py-4 py-lg-8 position-relative text-white">
-    <div class="bg-overlay-primary">
-        <img src="{{ asset('images/bleu.jpg') }}" class="img-fluid img-cover" alt="Robust UI Kit" style="width: 100%; display: block;" >
-    </div>
-    <div class="intro-content py-6 text-center">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
-                    <h1 class="my-3 display-4 d-none d-lg-inline-block">Inscription</h1>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- fil d'arianne -->
+<div aria-label="breadcrumb">
+	<ol class="breadcrumb mt-0">
+		<li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+		<li class="breadcrumb-item active" aria-current="page"><a href="#">Inscription</a></li>
+  	</ol>
 </div>
+
  <!-- slogan -->
  <div class="jumbotron">
-        <!-- <div class="container">
-            <h2></h2>
-         </div> -->
+
+          {% if success is not defined %}
+            <h2>Inscrivez-vous ici</h2>
+         
+            {% else  %}
+        
+            <h2>Bienvenue sur le site</h2>
+            <p>Pensez à activer votre compte par mail</p>
+          {% endif %}
     </div>
 
    
-<div class="container">
+{# message d'erreur #}
+{% if errors is defined %}
+    
+{% for error in errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    
+{% endfor %}
+
+{% endif %}
+
+{# message de succes #}
+{% if success is defined %}
+
+<div class="alert alert-success" role="alert">
+        {{ success }}
+    </div>
+    <div class="row d-flex justify-content-center">
+    <a href="{{path('api_login')}}" class="btn btn-primary btn-lg btn-block col-6"> Connexion</a>
+  </div>
+{% endif %}
+
 
 
 
    {# si success n'est pas deffinit #}
     {% if success is not defined %}
     
+    <div class="m-5">
     {# formulaire #}
     <form action="{{ path('register') }}" method="POST">
             <div class="form-row offset-2">
@@ -65,48 +87,26 @@
                     <input type="password" class="form-control" id="exampleInputPassword1" name="confirm_password" placeholder="Confirmation" required>
                 </div>    
 
-                <!-- <label for="validationDefault03"></label>
-                <input type="pasword" class="form-control" id="validationDefault03" name="password" placeholder="Mot de passe" required>
-              </div>
-              <div class="col-md-6 mb-3">
-                    <label for="validationDefault03"></label>
-                    <input type="password" class="form-control" id="validationDefault03"  name="confirm_password" placeholder="Confirmation" required>
-                </div> -->
-
             </div>
            
-        
+        <!-- recaptcha -->
           <div class="g-recaptcha" data-sitekey="{{google_token}}"></div>
-
-          <button class="btn btn-lg btn-primary btn-block" type="submit">S'inscrire</button>
+  <!-- bouton d'inscription -->
+          <button   class="btn btn-primary btn-lg btn-block col-6" type="submit">S'inscrire</button>
         </form>
+      </div>
 
-
-    </div>
+</div>   
     
     {% endif %}
-    {# message d'erreur #}
-    {% if errors is defined %}
-    
-        {% for error in errors %}
-            <div class="alert alert-danger" role="alert">
-                {{ error }}
-            </div>
-            
-        {% endfor %}
 
-    {% endif %}
     
-    {# message de succes #}
-    {% if success is defined %}
-    <div class="alert alert-success" role="alert">
-            {{ success }}
-        </div>
-    {% endif %}
+    
+    
 
 
     <script src='https://www.google.com/recaptcha/api.js'></script>
-</body>
+
 {% endblock %}
 
 

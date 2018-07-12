@@ -1,0 +1,231 @@
+{% extends 'base.html.twig' %} 
+
+{% block stylesheets %}
+
+<style>
+    .star {
+
+        color:red;
+        cursor:pointer;
+        font-size:3em;
+        margin-right:10px; 
+    }
+
+    .star:last-child {
+        margin:0;
+    }
+
+    .contains-stars {
+        display: inline-block;
+    }
+</style>
+
+{% endblock %}
+
+{% block h1 %}Gestion de projet{% endblock %} {% block title %}Page Gestion Projet{% endblock %} {% block body %}
+
+
+
+<div aria-label="breadcrumb">
+    <ol class="breadcrumb mt-0">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Page Gestion Projet</a></li>
+    </ol>
+</div>
+
+<!-- slogan -->
+<div class="jumbotron">
+
+    <h2>Liste des postulants</h2>
+
+</div>
+
+{% if success is defined and not null %}
+
+<div class="alert alert-success col-12">
+    {{success}}
+</div>
+
+{% endif %} 
+
+{% if errors is defined and not null %}
+{% for error in errors %}
+<div class="alert alert-danger col-12">
+    {{error}}
+</div>
+{% endfor %}
+{% endif %} 
+{% if jobs is not defined %}
+
+<div class="alert alert-danger">
+    Candidature inexistant  <a href="{{path('home')}}"> (retour)</a>
+</div>
+
+{% else %}
+
+
+
+
+<div class="row" id="markupbefore">
+    <div class="col-10 offset-1">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Date de candidature</th>
+                        <th scope="col">N°annonce</th>
+                        <th scope="col">Titre de l'annonce</th>
+                        <th scope="col">Statut</th>
+                        <th scope="col"> [Action]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                    <tr {% if job.status.id == 3 %}class="table-success" {% endif %}{% if job.status.id==2 %}class="table-danger" {% endif %}{% if job.status.id == 4 or job.status.id == 5 %}class="table-primary" {% endif %}>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{job.author.name}}</td>
+                        <td>{{job.author.firstname}}</td>
+                        <td>{{job.author.email}}</td>
+                        <td>{{job.dateApply|date('d-m-Y H:i:s')}}</td>
+                        <td>{{job.advert.id}}</td>
+                        <td>{{job.advert.title}}</td>
+                        <td>
+                            {% if job.status.id == 3 %}
+                             <ion-icon name="checkmark"></ion-icon>{% endif %}
+                            {% if job.status.id == 4 %}
+                            <ion-icon name="lock"></ion-icon>{% endif %}
+                            {% if job.status.id == 1 %}
+                            <ion-icon name="hourglass"></ion-icon>{% endif %}
+                            {% if job.status.id == 2 %}
+                            <ion-icon name="close"></ion-icon>{% endif %}
+                            {% if job.status.id == 5%}
+                            <ion-icon name="lock"></ion-icon>
+                                Projet Clos
+                            {% else %}
+                            {{job.status.label}}
+                            {% endif %}
+                        </td>
+                        <td>
+
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                {% if job.status.id == 1 %}
+                                <a href="{{path('api_changestate', {idTargetedAdvert: job.advert.id, idDevelopper:job.author.id, idStatus:3,action:1})}}" class="btn btn-secondary" style="color:white;">Accepter</a>
+                                <a href="{{path('api_changestate', {idTargetedAdvert: job.advert.id, idDevelopper:job.author.id, idStatus:2,action:1})}}" class="btn btn-secondary" style="color:white;">Refuser</a> {% endif %} {% if job.status.id == 3 %}
+                                <a href="{{path('api_changestate', {idTargetedAdvert: job.advert.id, idDevelopper:job.author.id, idStatus:4,action:1})}}" class="btn btn-secondary" style="color:white;">Clore le dossier</a> {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-6 offset-3">
+
+
+        <table class="table table-sm">
+            <caption>Développeur qui ne sont pas encore noté ! (liste projet terminé)</caption>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">N°Annonce</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col"> [Note]</th>
+                    <th scope="col"> [Laissez un commentaire]</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if jobs is defined %} {% for job in jobs %}
+                {% if job.status.id == 4 %}
+                <form action="{{path('api_changestate', {idTargetedAdvert: job.advert.id, idDevelopper:job.author.id, idStatus:4,action:2})}}" method='POST'>
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{job.advert.id}}</td>
+                        <td>{{job.author.name}}</td>
+                        <td>
+                            <div class="form-group">
+
+                                <input type="hidden" class="rate-input" value="" name="rate">
+
+                                <!-- <div>
+                                    <div class="contains-stars">
+                                    
+                                            <span>
+                                                <ion-icon data-index-star="1" name="star-outline" class="star ion-ios7-star-outline star" ></ion-icon>
+                                            </span>
+                                            
+                                            <span>
+                                                <ion-icon data-index-star="2" name="star-outline" class="star ion-ios7-star-outline star" ></ion-icon>
+                                            </span>
+                                            
+                                            <span>
+                                                <ion-icon data-index-star="3" name="star-outline" class="star ion-ios7-star-outline star" ></ion-icon>
+                                            </span>
+                                            
+                                            <span>
+                                                <ion-icon data-index-star="4" name="star-outline" class="star ion-ios7-star-outline star" ></ion-icon>
+                                            </span>
+                                            
+                                            <span>
+                                                <ion-icon data-index-star="5" name="star-outline" class="star ion-ios7-star-outline star" ></ion-icon>
+                                            </span>
+                                    
+                                            
+                                        </div>
+                                </div> -->
+
+
+
+
+                                <select name="rate" class="form-control" id="exampleFormControlSelect1">
+						<option value="">Note/5</option selected>
+						<option values='0' >0</option>
+						<option values="1">1</option>
+						<option values='1.5'>1,5</option>
+						<option values="2">2</option>
+						<option values="2.5">2,5</option>
+						<option values="3">3</option>
+						<option values="3.5">3,5</option>
+                        <option values="4">4</option>
+                        <option values="4.5">4,5</option>
+                        <option values="5">5</option>
+                        
+					
+                        </select> 
+                        
+                
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <textarea class="form-control" id="exampleFormControlTextarea1" name="comment" placeholder="Entrez un commentaire" rows="1"></textarea >
+                            </div>
+                        </td>
+                        <td><button class="btn btn-info">Valider</button></td>
+                    </tr>
+                </form>
+                {% endif %}
+                {% endfor %} {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+
+{% endif %} {% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/rating.js') }}"></script>
+{% endblock %} 

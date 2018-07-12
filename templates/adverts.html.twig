@@ -1,86 +1,109 @@
-{% extends 'base.html.twig' %}
-{% block body %}
-<body class="color">
-	{% block header%}
+{% extends 'base.html.twig' %} {% block h1 %}Les annonces{% endblock %} {% block title %}Déposé une annonces{% endblock %} {% block body %} {% block header%}
 
-<div class="intro py-4 py-lg-8 position-relative text-white bg-h1">
-    <div class="bg-overlay-primary">
-        <img src="{{ asset('images/bleu.jpg') }}" class="img-fluid img-cover img-responsive" alt="Robust UI Kit" style="width: 100%; display: block;" >
-    </div>
-        <div class="intro-content py-6 text-center">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
-                        <h1 class="my-3 display-4 d-none d-lg-inline-block">Annonces</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    
+<div aria-label="breadcrumb">
+    <ol class="breadcrumb mt-0">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Anonnces</a></li>
+    </ol>
+</div>
 
 <!-- slogan -->
-        <div class="jumbotron">
-            <div class="container">
-                <h2>Nos Dernières Annonces</h2>
-                <p>Attention! Vous risquez de trouver votre bonheur!</p>
+<div class="jumbotron">
 
-<!--
-                <div id="scroll" style="position: fixed; top: 90%; right: 5%;" class="clicked">
-                    <span class="">↓</span>
+    <h2>Nos Dernières Annonces</h2>
+    <p class="soustext">Attention! Vous risquez de trouver votre bonheur!</p>
+
+
+
+</div>
+{% endblock %} {% if adverts is empty %}
+
+<div class="col-12 alert alert-danger" role="alert">
+    Aucune annonce trouvée<a href="{{path('home')}}"> (Retour)</a>
+</div>
+
+<div class="row d-flex justify-content-center m-3">
+    <a href="{% if session.get('account') is not null %}{{ path('addadvert') }}{% else %}{{path('api_login')}}{% endif %}" class="btn btn-primary btn-lg btn-block col-6">Déposer une annonce</a>
+</div>
+
+{% else %}
+
+<div class="row m-5 ">
+    {% for advert in adverts %}
+
+
+
+    <div class="col-md-4">
+        <div class="card mb-4 box-shadow  {% if session.get('account') is not null %}{% if session.get('account').id == advert.author.id %}border border-info {% endif %}{% if jobs is defined and not null %}{% for job in jobs %}{% if job.advert.id == advert.id and job.author.id == session.get('account').id  %}border border-secondary{% endif %}{% endfor %}{% endif %}{% endif %}">
+            {% if advert.contractType == "cdi" %}
+
+            <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 300px; width: 100%; display: block;" src=" {{ asset('images/cdi.jpg') }}" data-holder-rendered="true"> {% endif %} {% if advert.contractType == "cdd" %}
+
+            <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 300px; width: 100%; display: block;" src="{{ asset('images/cdd.png') }}" data-holder-rendered="true"> {% endif %} {% if advert.contractType == "intérim" %}
+
+            <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 300px; width: 100%; display: block;" src=" {{ asset('images/interim.jpg') }}" data-holder-rendered="true"> {% endif %} {% if advert.contractType == "freelance" %}
+            <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 300px; width: 100%; display: block;" src="{{ asset('images/freelance.png') }}" data-holder-rendered="true"> {% endif %}
+            <div class="card-body">
+                <p class="card-text">Annonce N°:{{advert.id}}</p>
+                <p class="card-text">Titre: {{advert.title}}</p>
+                <p class="card-text" id="height-max">Description: {{advert.content}}</p>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Déposé par: {{advert.author.name}}</small>
+                    <small class="text-muted">Le {{advert.postdate|date('d /m /Y')}}.</small>
                 </div>
--->
+                <a class="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center" href="{{ path('advert', { id : advert.id }) }}">Voir</a>
             </div>
+            {% if session.get('account') is not null %} {% if session.get('account').id == advert.author.id %}
+            <span class="badge badge-info">Vous êtes l'auteur</span>
+             {% endif %}
+
+                {% if jobs is defined and not null %}
+
+                    {% for job in jobs %}
+
+                        {% if advert.id == job.advert.id and session.get('account').email == job.author.email and job.status.id == 1 %}
+                            <span class="badge badge-secondary">Candidature envoyé</span> 
+                        {% endif %} 
+
+                        {% if advert.id == job.advert.id and session.get('account').email == job.author.email and job.status.id == 2 %}
+                            <span class="badge badge-danger">Candidature refusé</span> 
+                        {% endif %}
+
+                        {% if advert.id == job.advert.id and session.get('account').email == job.author.email and job.status.id == 3 %}
+                            <span class="badge badge-success">Candidature Accepté</span>
+                        {% endif %} 
+
+                    {% endfor %}
+
+                    {% if jobClosed is defined and not null %}
+                        
+                            {% for jobC in jobClosed %}
+                                {% if jobC.status.id == 4 or jobC.status.id == 5 %}
+                                    {% if jobC.author.id == session.get('account').id  %}
+                                        {% if jobC.advert.id == advert.id %}
+                                            <span class="badge badge-info">Projet Clos</span> 
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                       
+                    {% endif %}
+
+                {% endif %} 
+            {% endif %}
         </div>
-	{% endblock %}
-
-
-    {% if adverts is null %}
-
-    <a style="color:red" href="{{path('adverts')}}" > Aucune annonce trouvée (Retour)</a>
-
-
-    {% else %}
-    <div class="container">
-            <div class="row">
-        {% for advert in adverts %}
-
-        
-                    
-        <div class="col-md-4">
-            <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22200%22%20height%3D%22250%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20250%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16426e2ff6c%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A13pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16426e2ff6c%22%3E%3Crect%20width%3D%22200%22%20height%3D%22250%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2256.203125%22%20y%3D%22131%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true">
-                <div class="card-body">
-                    <p class="card-text">Titre: {{advert.title}}</p>
-                    <p class="card-text" id="height-max">Description: {{advert.content}}</p>
-                    
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">Déposé par: {{advert.author.name}}</small>
-                        <small class="text-muted">Le {{advert.postdate|date('d /m /Y')}}.</small>
-                    </div>
-                    <a class="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center" href="{{ path('advert', { id : advert.id }) }}">Voir</a>
-                </div>
-            </div>
-        </div>
-
-
-                   
-               
-            <!-- <div class="card-body {% if session.get('account') is not null and advert.author.id == session.get('account').id %}alert alert-secondary{% endif %}">
-                <p>
-                    <a href="{{ path('advert', { id : advert.id }) }}">{{advert.title}}</a>
-                </p>
-            </div> -->
-
-        {% endfor %}
     </div>
-    
-        <a href="{% if session.get('account') is not null %}{{ path('addadvert') }}{% else %}{{path('login')}}{% endif %}" class="btn btn-lg btn-primary btn-block">Déposer une annonce</a>
-    </div>
-       
 
-    {% endif %}
-</body>
-{% endblock %}
+
+
+
+    {% endfor %}
+</div>
+
+<div class="row d-flex justify-content-center m-3">
+    <a href="{% if session.get('account') is not null %}{{ path('addadvert') }}{% else %}{{path('api_login')}}{% endif %}" class="btn btn-primary btn-lg btn-block col-6">Déposer une annonce</a>
+</div>
+
+
+{% endif %} {% endblock %}

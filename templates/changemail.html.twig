@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+{% block h1 %}Changement du mail{% endblock %} {% block title %}Changement du mail{% endblock %} 
+{% block body %}
+
+<div aria-label="breadcrumb">
+	<ol class="breadcrumb mt-0">
+		<li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+		<li class="breadcrumb-item "><a href="{{ path('profile') }}">profil</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Modifier votre profil</a></li>
+  	</ol>
+</div>
+    <div class="jumbotron">
+  
+        </div>
+   
+
+   {# message d'erreur #}
+   <div class="com-12 m-0">
+   {% if errors is defined %}
+
+
+   {% for error in errors %}
+   <div class="alert alert-danger" role="alert">
+           {{ error }}
+         </div>
+   {% endfor %}
+
+{% endif %}
+
+    {# message de succes #}
+    {% if success is defined %}
+    
+        <div class="alert alert-success" role="alert">
+                {{ success }}
+        </div>
+        <div class="row d-flex justify-content-center">
+            <a href="{{ path('adverts') }}" class="btn btn-primary btn-lg btn-block col-6">Retour aux annonces</a>
+        </div>
+  
+    {% endif %}
+</div>
+
+   {# si succes n'est pas deffinit #}
+   {% if success is not defined %}
+
+    <div class="row">
+
+    {# formulaire #}
+        <div class="col-10 offset-1">
+                    <form action="{{ path('api_editmail', { id : app.session.get('account').id, token : app.session.get('account').activationToken }) }}" method="POST" class="needs-validation" novalidate>
+                        <div class="form-row">
+                           
+                            <input class="form-control text-center" id="offmail" value="{{ app.session.get('account').email}}" disabled>
+                          <div class="input-group col-12">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="inputGroupPrepend2">@</span>
+                                </div>
+                                <input type="text" class="form-control" id="validationDefaultUsername"  name="email" placeholder="Changer le mail [ {{ app.session.get('account').email}} ]" aria-describedby="inputGroupPrepend2">
+                              </div>
+                        
+
+                        <div class="input-group col-12">
+                        <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroupPrepend2">@</span>
+                              </div>
+                              <input  class="form-control" type="text" class="form-control" id="validationDefaultUsername"  name="confirmemail" placeholder="Confirmez le mail" aria-describedby="inputGroupPrepend2">
+                            </div>
+                        </div>
+                    <button class="btn btn-primary col-12" type="submit">Valider</button>
+                </div>
+                    </form>
+        </div>
+            
+        </div>
+    </div>
+    {% endif %}
+    
+
+
+
+
+
+{% endblock %}
+    
+
+
+
+{% block javascript %}{% endblock %}
+
+   
+

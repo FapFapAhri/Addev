@@ -1,60 +1,118 @@
-{% extends 'base.html.twig' %} 
-{% block body %} 
-<body class="color">
+{% set img = app.session.get('account').img %} {% extends 'base.html.twig' %} {% block h1 %}Profil utilisateur{% endblock %} {% block title %}Profil utilisateur{% endblock %} {% block body %} {# affiche les info de la personne connectee #}
 
-{# affiche les info de la personne connectee #}
-
-
-<div class="intro py-4 py-lg-8 position-relative text-white bg-h1">
-    <div class="bg-overlay-primary">
-        <img src="{{ asset('images/bleu.jpg') }}" class="img-fluid img-cover" alt="Robust UI Kit" style="width: 100%; display: block;">
-    </div>
-    <div class="intro-content py-6 text-center">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
-                    <h1 class="my-3 display-4 d-none d-lg-inline-block">Profil de {{ app.session.get('account').name }}</h1>
-                </div>
-            </div>
-        </div>
-    </div>
+<div aria-label="breadcrumb">
+    <ol class="breadcrumb mt-0">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Profil</a></li>
+    </ol>
 </div>
 
 <!-- slogan -->
-<div class="jumbotron jumbotron2">
-    <div class="container">
-        <h2>Votre profile</h2>  
+<div class="jumbotron">
+
+    <h2>
+        <ion-icon name="contact"></ion-icon>Profil </h2>
+
+</div>
+
+{% if success is defined %} {% endif %} {% if success is defined %}
+<div class="alert alert-success" role="alert">
+    {% for succ in success %} {{ succ }} {% endfor %}
+</div>
+{% endif %} {% if errors is defined %} {% for error in errors %}
+<div class="alert alert-danger" role="alert">
+    {{ error }}
+</div>
+{% endfor %} {% endif %}
+<div class="album py-4 p-3 bg-light">
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
+            <div class="card mb-4 mt-5 box-shadow">
+                <div class="col-lg-12" id="profil">
+                    <img class="rounded-circle m-2 image-profil" {% if app.session.get( 'account').img is null %} src="{{ asset('images/profil.jpg') }}" {% else %} src="{{ asset('/images/' ~ img) }}" {% endif %} alt="Generic placeholder image" width="140" height="140" align-content="center">
+                    <label for="nom"><h2>Présentation</h2>
+                <p> <ion-icon name="contact"></ion-icon>Nom: {{ app.session.get('account').name}}</p> 
+                <p><ion-icon name="contact"></ion-icon>Prénom: {{ app.session.get('account').firstname}}</p> 
+                <p><ion-icon name="mail"></ion-icon> {{ app.session.get('account').email}}</p>
+                <p> <ion-icon name="copy"></ion-icon>Inscrit le: {{ app.session.get('account').registerDate|date('d-m-Y') }}</p>
+                <p> <ion-icon name="call"></ion-icon>Tél:{% if app.session.get('account').phone is not null %} {{ app.session.get('account').phone}} {% else %} Pas de numéro {% endif %}</p>
+            </label>
+                </div>
+                <div class="btn-group">
+                    <form class="col-12 " action="{{ path('api_upload') }}" method="POST" enctype="multipart/form-data">
+
+                        <label for="picture_updload"></label>
+                        <input type="file" name="picture_updload" id="picture_updload">
+
+
+                        <input type="hidden" name="MAX_FILE_SIZE" value="{{ uploaded_file_max_size }}">
+
+                        <button class="btn btn-primary" type="submit"><ion-icon name="arrow-back"></ion-icon> Upload de l'image</button>
+                    </form>
+                </div>
+
+                <button type="button" class="btn btn-primary m-4" data-toggle="modal" data-target="#exampleModal">
+                            Modifier Profil <ion-icon name="create"></ion-icon>
+                          </button>
+            </div>
+            <small class="text-muted"></small>
+        </div>
     </div>
+
 </div>
 
 
 
-<div class="album py-5 bg-light">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 offset-md-4">
-                <div class="card mb-4 mt-5 box-shadow">
-                    <div class="col-lg-12" id="profil">
-                        <img class="rounded-circle" src="{{ asset('images/einstein.jpeg')}}" alt="Generic placeholder image" width="140" height="140" align-content="center">
-                        <label for="nom"><h2>Présentation</h2>
-                <p>nom: {{ app.session.get('account').name}}</p> 
-                <p>prénom: {{ app.session.get('account').firstname}}</p> 
-                <p>adresse mail: {{ app.session.get('account').email}}</p>
-                <p>Inscrit le: {{ app.session.get('account').registerDate|date('d-m-Y') }}</p>
-            </label>
-                    </div>
-                    <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-see">Consulter</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Modifier</button>
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Changer votre profil</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+
+                {# body modal #}
+                <form action="{{ path('api_edit_profile', {id:app.session.get('account').id, token:app.session.get('account').activationToken}) }}" method="POST">
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="validationDefault01">Nom :</label>
+                            <input type="text" name="name" class="form-control" id="validationDefault01" value="{{ app.session.get('account').name}}">
                         </div>
-                    <small class="text-muted"></small>
-                </div>
+                        <div class="col-12">
+                            <label for="validationDefault02">Prénom :</label>
+                            <input type="text" name="firstname" class="form-control" id="validationDefault02" value="{{ app.session.get('account').firstname}}" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="validationDefault03">Tél :</label>
+                            <input type="text" name="phone" class="form-control" id="validationDefault03" {% if app.session.get( 'account').phone is not null %} value="{{ app.session.get('account').phone}}" {% else %} placeholder="Pas de numéro" {% endif %}>
+                        </div>
+                        <div class="input-group col-12">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroupPrepend2">@</span>
+                            </div>
+                            <input type="text" class="form-control" id="validationDefaultUsername" name="email" value="{{ app.session.get('account').email}}" aria-describedby="inputGroupPrepend2" disabled>
+                        </div>
+                        <div class="input-group-append">
+
+                            <a href="{{path('changemail')}}" class="input-group-text btn btn-secondary" id="inputGroupPrepend2">
+                                <ion-icon name="mail" id="mpr"></ion-icon> Changer</a>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="submit" class="btn btn-primary">Valider</button>
             </div>
         </div>
     </div>
-
-
-</body>
-    {% endblock %} 
-
-    {% block javascript %}{% endblock %}
+</div>
+</form>
+{% endblock %} {% block javascript %}{% endblock %}

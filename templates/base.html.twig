@@ -1,194 +1,190 @@
-
-{% set route = app.request.attributes.get('_route') %}
-{% set session = app.session %}
+ {% set route = app.request.attributes.get('_route') %} {% set session = app.session %}
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
 
-        <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    {# <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}"> #}
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-        {% block stylesheets %}
-        {% endblock %}
-    </head>
-    <body>
-   		 <header>
+<head>
+	<meta charset="UTF-8">
 
-<!-- bar de navigation -->
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="#">Logo</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link {% if route == 'home' %}active{% endif %}" href="{{ path('home') }}">Accueil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link{% if route == 'adverts' %} active {% endif %}" href="{{ path('adverts') }}">Annonces</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link{% if route == 'info' %} active {% endif %}" href="{{ path('info') }}">Info</a>
-                </li>
-    
-                  {# si on est deconnecté, on affiche: #}
-                {% if app.session.get('account') is null %}
-    
-                    <li class="nav-item">
-                        <a class="nav-link {% if route == 'register' %}active{% endif %}" href="{{ path('register') }}">Inscription</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if route == 'login' %}active{% endif %}" href="{{ path('api_login') }}">Connexion</a>
-                    </li>
-    
-                    {# sinon on affiche: #}
-                    {% else %}
-    
-                    <li class="nav-item">
-                        <a class="nav-link {% if route == 'logout' %}active{% endif %}" href="{{ path('api_logout') }}">Deconnexion</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if route == 'profile' %}active{% endif %}" href="{{ path('profile') }}">Profil</a>
-                    </li>
-    
-                    {% if app.session.get('account') is not null and session.get('account').adminlevel == 1  %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if route == 'admin' %}active{% endif %}" href="{{ path('admin') }}">[Admin]</a>
-                        </li>
-                    {% endif %}
-                {% endif %}
-    
-    
-    
-            </ul>
-        </div>
-    </nav>
+	<title>{% block title %}{% endblock %}</title>
+	<link rel="icon" href="{{ asset('images/logo3dark.ico') }}" />
+	<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> 
+	<link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+	
+	 {% block stylesheets %} {% endblock %}
+</head>
 
+<body>
+	<header>
 
+		<!-- bar de navigation -->
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+			<a href="{{ path('home') }}"><img class="navbar-brand logo" src="{{ asset('/images/logo1.png') }}"></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+			    aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link {% if route == 'home' %}active{% endif %}" href="{{ path('home') }}">Accueil</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link{% if route == 'adverts' %} active {% endif %}" href="{{ path('adverts') }}">Annonces</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link{% if route == 'info' %} active {% endif %}" href="{{ path('info') }}">Info</a>
+					</li>
 
+					{# si on est deconnecté, on affiche: #}
+					 {% if app.session.get('account') is null %}
 
+						<li class="nav-item">
+							<a class="nav-link {% if route == 'register' %}active{% endif %}" href="{{ path('register') }}">Inscription</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% if route == 'login' %}active{% endif %}" href="{{ path('api_login') }}">Connexion</a>
+						</li>
 
-      
-  
-       
-  </header>
-        {% block body %}
-        {# <div class="intro py-5 py-lg-9 position-relative text-white">
-            <div class="bg-overlay-primary">
-              <img src="images/bleu.jpg" class="img-fluid img-cover" alt="Robust UI Kit" style="height: 300px; width: 100%; display: block;" >
-            </div>
-            <div class="intro-content py-6 text-center">
-              <div class="container">
-                <div class="row align-items-center">
-                  <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
-                    <h1 class="my-3 display-4 d-none d-lg-inline-block">{{ app.session.get('title').h1 }}</h1>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-         #}
-        
-        {% endblock %}
+					{# sinon on affiche: #} 
+					{% else %}
 
-    <!-- bas de la page -->
-    <footer class="mastfoot mt-auto ">
-        <div class="inner">
+						<li class="nav-item">
+							<a id="logout" data-connection = "{{path('api_login')}}" class="nav-link {% if route == 'logout' %}active{% endif %}" href="{{ path('api_logout') }}">Deconnexion</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% if route == 'profile' %}active{% endif %}" href="{{ path('profile') }}">Profil</a>
+						</li>
+						<li class="nav-item ">
+							{% if app.session.get('job') is not null %}
+								<a class="nav-link {% if route == 'project' %}active{% endif %}" href="{{ path('project') }}">Gestion de projet <span class="badge badge-secondary"> {{app.session.get('job')}}</span></a>
+							{% else %}
+							<a class="nav-link {% if route == 'project' %}active{% endif %}" href="{{ path('project') }}">Gestion de projet</a>
+							{% endif %}
+						</li>
 
-          
-          
-          <span><a id="nav-link{% if route == 'faq' %}active{% endif %}" href="{{ path('faq') }}">F.A.Q</a></span>
-          
-
-          {# <span><a href="#">Mention Legale</a></span> #}
-          <!-- Button trigger modal -->
-          <span><a href="#"  data-toggle="modal" data-target="#mentions"> Mention Legale</a></span>
-
-<!-- Modal -->
-<div class="modal fade" id="mentions" tabindex="-1" role="dialog" aria-labelledby="mentionsTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="mentionsTitle">Mention Legale</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-
-        raesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-      
-        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-        {# <button type="button" class="btn btn-primary">Save changes</button> #}
-      </div>
-    </div>
-  </div>
-</div>
+					{% if app.session.get('account') is not null and session.get('account').adminlevel == 1 %}
+					<li class="nav-item">
+						<a class="nav-link {% if route == 'admin' %}active{% endif %}" href="{{ path('admin') }}">[Admin]</a>
+					</li>
+					{% endif %}
+	
+					
+					 {% endif %}
 
 
 
-          <!-- <span><a href="#">Contact</a></span> -->
+				</ul>
+			</div>
+			{% if app.session.get('account') is not null %}
+			<span class="float-right" style="color:grey;">{{app.session.get('account').name}} {{app.session.get('account').firstname}}<span>
+		   {% endif %}
+		</nav>
+	</header>
 
-          <!-- Button trigger modal -->
-          <span><a href="#"  data-toggle="modal" data-target="#contactModal">Contact</a></span>
+	
+	<div class="container-fluid color">
 
-<!-- Modal -->
-<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="contactModalTitle">Contact</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <p>Nom:</p>
-          <p>Prenom:</p>
-          <p>Tel:</p>
-          <p>Email:</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-        {# <button type="button" class="btn btn-primary">Save changes</button> #}
-      </div>
-    </div>
-  </div>
-</div>
-           <span>© 2018 Addev, Inc.</a></span>
-        </div>
-      </footer>
+		<div class="intro py-4 py-lg-8 position-relative text-white bg-h1 p-5">
+			<img src="{{ asset('images/bleu.jpg') }}" class="img-fluid img-cover m-xl-12" alt="Titre" style=" width: 100%; display: block;">
+			<div class="intro-content py-6 text-center">
+		
+					<div class="row align-items-center">
+						<div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
+							<h1>{% block h1 %}Titre{% endblock %}</h1>
+						</div>
+					</div>
+				
+			</div>
+		</div>
+
+		<!-- inclusion pages -->
+		{% block body %}{% endblock %}
+	</div>
+	
+	<!-- bas de la page -->
+	<footer id="main-footer" class="py-5 px-4 text-center">
+		<div class="row">
+
+			<p class="col-md col-12">
+				<a id="nav-link{% if route == 'faq' %}active{% endif %}" href="{{ path('faq') }}">F.A.Q</a>
+			</p>
+
+			<!-- Button trigger modal -->
+			<p class="col-md col-12">
+				<a href="#" data-toggle="modal" data-target="#mentions"> Mention Legale</a>
+			</p>
+
+		
+
+			<!-- Button trigger modal -->
+			<p class="col-md col-12">
+				<a href="#" data-toggle="modal" data-target="#contactModal">Contact</a>
+			</p>
+
+			<p class="col-md col-12">© 2018 Addev, Inc.</p>
+
+			<!-- Modal -->
+			<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalTitle" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="contactModalTitle">Contact</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p>Vous pouvez nous contacter aux:</p>
+							<p>Telephone: 06 12 34 56 78</p>
+							<p>Email: contact@addev.com</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+				
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Modal -->
+			<div class="modal fade" id="mentions" tabindex="-1" role="dialog" aria-labelledby="mentionsTitle" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="mentionsTitle">Mention Legale</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo
+							risus, porta ac consectetur ac, vestibulum at eros. raesent commodo cursus magna, vel scelerisque nisl consectetur
+							et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla sed consectetur.
+							Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non
+							metus auctor fringilla.
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
 
 
+	<script>
+		var main_url = "{{ absolute_url(path('home')) }}";
+		var asset_dir = "{{ absolute_url(asset('/')) }}";
+	</script>
+	<script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+	<script src="{{ asset('js/main.js') }}"></script>
+	
+	
+	<script src="https://unpkg.com/ionicons@4.2.0/dist/ionicons.js"></script>
+	{% block javascripts %} {% endblock %}
+</body>
 
-    <!-- <hr class="featurette-divider">
-
-    <footer class="container footer">
-     <p class="float-right"><a href="#">Contact</a></p>
-    <p>© 2018 Addev, Inc. <a class="lnfoot" href="#">F.A.Q</a> <a href="#">Mentions légales</a> </p>
-  </footer> -->
-
-
-
-
-      <script>
-          var main_url = "{{ absolute_url(path('home')) }}";
-          var asset_dir = "{{ absolute_url(asset('/')) }}";
-      </script>
-      <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
-      <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-      <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
-      <script src="https://unpkg.com/ionicons@4.2.0/dist/ionicons.js"></script>
-	{% block javascripts %}
-	{% endblock %}
-    </body>
 </html>

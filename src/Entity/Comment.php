@@ -38,6 +38,11 @@ class Comment
      */
     private $comment;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Advert", inversedBy="comments")
+     */
+    private $advert;
+
 
     public function getId()
     {
@@ -93,5 +98,19 @@ class Comment
 
         return $this;
     }
+
+    public function getAdvert(): ?Advert
+    {
+        return $this->advert;
+    }
+
+    public function setAdvert(?Advert $advert): self
+    {
+        $this->advert = $advert;
+
+        return $this;
+    }
+
+
 
 }

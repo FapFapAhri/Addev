@@ -88,6 +88,21 @@ class User
      */
     private $registerDate;
 
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $img;
+
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private $token;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $phone;
+
     public function __construct()
     {
         $this->jobRequests = new ArrayCollection();
@@ -341,6 +356,42 @@ class User
     public function setRegisterDate(\DateTimeInterface $registerDate): self
     {
         $this->registerDate = $registerDate;
+
+        return $this;
+    }
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(?string $img): self
+    {
+        $this->img = $img;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
 
         return $this;
     }

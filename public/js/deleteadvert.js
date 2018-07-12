@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', function(){
     
-
+var remove = function(){
+    $('body').find('#exampleModal').remove();
+}
     $('#delete-advert').click(function(e){
-      
+      var linkAd = $(this).data('retour');
         e.preventDefault();
-
+    console.log(linkAd);
         $.ajax({
             url : $(this).data('link'),
             type : 'POST',
@@ -15,17 +17,20 @@ document.addEventListener('DOMContentLoaded', function(){
             dataType : 'json',
 
             success: function(data){
+                
                
                 if(data.delete){
-                    
-                    
+                    $('#exampleModal').modal('toggle');
 
-                  $('#exampleModal').modal('toggle');
-                  $('body').html(`<div class="alert alert-success" role="alert">
-                  L'annonces a bien été supprimé
-                </div>`);
+                 
+                  $('body').find('.msg').html(`<div class="alert alert-success" role="alert">
+                    L'annonces a bien été supprimé
+                    `);
+                    
+                // $('.row').find('.msg').append();
+                setTimeout(4000,remove);
+                // $('body').find('#exampleModal').remove();
 
-                $('body').append(`<div><a class="btn btn-primary"  href="http://127.0.0.1:8000/adverts/" >Retour</a></div>`);
 
                 }
                
@@ -36,10 +41,10 @@ document.addEventListener('DOMContentLoaded', function(){
                 alert( xhr.status ) ;
             },
             beforeSend : function(){
-               
+                setOverlay();
             },
             complete : function(){
-               
+                removeOverlay();
             }
 
         });

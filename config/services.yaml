@@ -4,6 +4,11 @@ parameters:
     locale: 'en'
     google_private_token: '6LeR8VYUAAAAAO5Kf_ZRNZMmzvGT6TxO4x6ef2oZ'
     google_public_token: '6LeR8VYUAAAAAKC-NPzClyicVjsU2cgVrBoMSycN'
+    uploaded_file_max_size: 10000000
+    authorized_images_types:
+        - 'jpeg'
+        - 'png'
+    directory_upd: '%kernel.project_dir%/public/images'
 
 services:
     # default configuration for services in *this* file

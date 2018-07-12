@@ -1,134 +1,71 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}{% block h1 %}Déposer une Annonce{% endblock %} {% block title %}Déposer une Annonce{% endblock %} {% block body %}
 
-{% block body %}
-<body class="color">
-    {% block header%}
-
-<div class="intro py-4 py-lg-8 position-relative text-white bg-h1">
-    <div class="bg-overlay-primary">
-        <img src="{{ asset('images/bleu.jpg') }}" class="img-fluid img-cover" alt="Robust UI Kit" style=" width: 100%; display: block;" >
-    </div>
-        <div class="intro-content py-6 text-center">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
-                        <h1 class="my-3 display-4 d-none d-lg-inline-block">Déposer une Annonce</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    
+<div aria-label="breadcrumb">
+    <ol class="breadcrumb mt-0">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('adverts') }}">Annonces</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Deposer une annonce</a></li>
+    </ol>
+</div>
 
 <!-- slogan -->
-        <div class="jumbotron">
-            <div class="container">
-                <h2>Veuillez remplir votre annonce</h2>
-                <p>N'hésiter pas à être précis !</p>
-
-<!--
-                <div id="scroll" style="position: fixed; top: 90%; right: 5%;" class="clicked">
-                    <span class="">↓</span>
-                </div>
--->
-            </div>
-        </div>
-        
-	{% endblock %}
-   <div class="container">
-
-   {# si success n'est pas deffinit #}
+<div class="jumbotron">
     {% if success is not defined %}
-    
-    {# formulaire #}
-    <form action="{{ path('addadvert') }}" method="POST">
-        
+    <h2>Veuillez remplir votre annonce</h2>
+    <p class="soustext">N'hésiter pas à être précis !</p>
+
+    {% else %}
+
+    <h2>Merci pour la depose de l'annonce</h2>
+    <p>attendez juste une petite seconde, un developpeur vous contactera</p>
+    {% endif %}
+
+
+</div>
+
+{# si success n'est pas deffinit #} {% if success is not defined %} {# formulaire #} {#
+<div class="row formulaire-row"> #}
+    <div class="col-10 offset-1">
+        <form action="{{ path('addadvert') }}" method="POST">
+
             <div class="form-group">
-                    <label for="exampleFormControlInput1">Titre :</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1"  name="title" placeholder="Titre de l'annonce">
+                <label for="exampleFormControlInput1">Titre :</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" name="title" placeholder="Titre de l'annonce">
             </div>
             <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Description :</label>
-                    <textarea name="content" placeholder="Décrivez brièvement votre projet" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <label for="exampleFormControlTextarea1">Description :</label>
+                <textarea name="content" placeholder="Décrivez brièvement votre projet" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
             <div class="modal-body">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="status1">Type de Poste</label>
-                        </div>
-                        <select name="contractType" class="custom-select" id="status1">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="status1">Type de Poste</label>
+                    </div>
+                    <select name="contractType" class="custom-select" id="status1">
                                 <option selected value="cdi">CDI</option>
                                 <option value="cdd">CDD</option>
                                 <option value="intérim">Intérim</option>
                                 <option value="freelance">Freelance</option>
                         </select>
-                    </div>
                 </div>
-            <button type="submit" class="btn btn-primary ">Valider</button>
-            
-        </form>
-            
-
-
-
-        
-
-<!-- 
-
-    <form action="{{ path('addadvert') }}" method="POST">
-        <div class="form-group">
-            <label for="contractType">Type de Poste</label>
-            <select name="contractType" id="contractType">
-                <option selected value="cdi">CDI</option>
-                <option value="cdd">CDD</option>
-                <option value="intérim">Intérim</option>
-                <option value="freelance">Freelance</option>
-            </select>
-        </div>
-        <div class="form-group">
-                <label for="exampleFormControlInput1">Titre :</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1"  name="title" placeholder="Titre de l'annonce">
-        </div>
-        <div class="form-group">
-                <label for="exampleFormControlTextarea1">Description :</label>
-                <textarea name="content" placeholder="Décrivez brièvement votre projet" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary ">Valider</button>
-        
-    </form> -->
-    
-    {% endif %}
-    {# message d'erreur #}
-    {% if errors is defined %}
-    
-        {% for error in errors %}
-        
-            <div class="alert alert-danger" role="alert">
-                    {{ error }}
             </div>
-            
-        {% endfor %}
+            <button type="submit" class="btn btn-primary ">Valider</button>
 
-    {% endif %}
-    
-    {# message de succes #}
-    
-    {% if success is defined %}
-    
-       <div class="alert alert-success" role="alert">
-            {{ success }}
-        </div>
-        
-       <a href="{{ path('adverts') }}" class="btn btn-primary">Retour aux annonces</a>
-    {% endif %}
+        </form>
+    </div>
 
 
-</div>
-</body>
-{% endblock %}
 
+    {% endif %} {# message d'erreur #} {% if errors is defined %} {% for error in errors %}
 
-{% block javascript %}{% endblock %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
 
+    {% endfor %} {% endif %} {# message de succes #} {% if success is defined %}
+
+    <div class="alert alert-success" role="alert">
+        {{ success }}
+    </div>
+
+    <a href="{{ path('adverts') }}" class="btn btn-primary">Retour aux annonces</a> {% endif %} {% endblock %} {% block javascript %}{% endblock %}

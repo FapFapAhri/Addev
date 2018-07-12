@@ -28,6 +28,17 @@ class AdvertRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+
+    public function descAdverts()
+    {
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Advert[] Returns an array of Advert objects
 //     */

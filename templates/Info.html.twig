@@ -1,170 +1,136 @@
-{% extends 'base.html.twig' %}
-{% block body %}
-<body class="color">
-	{% block header%}
+{% extends 'base.html.twig' %} {% block h1 %}Language Informatiques{% endblock %} {% block title %}Language Informatiques{% endblock %} {% block body %} {% block header%}
 
-    <div class="intro intro-2 py-4 py-lg-8 position-relative text-white bg-h1">
-        <div class="bg-overlay-primary">
-            <img src="{{ asset('images/bleu.jpg') }}" class="img-fluid img-cover img-responsive" alt="Robust UI Kit" style=" width: 100%; display: block;" >
-        </div>
-            <div class="intro-content py-6 text-center">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
-                            <h1 class="my-3 display-4 d-none d-lg-inline-block">Language Informatique</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
+<div aria-label="breadcrumb">
+    <ol class="breadcrumb mt-0">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Language Informatique</a></li>
+    </ol>
+</div>
+
 <!-- slogan -->
-<div class="jumbotron jumbotron2">
-    <div class="container">
-        <h2>Tout sur les languages informatique</h2> 
+<div class="jumbotron">
 
-<!--
-        <div id="scroll" style="position: fixed; top: 90%; right: 5%;" class="clicked">
-            <span class="">↓</span>
-        </div>
--->
+    <h2>Tout sur les languages informatiques</h2>
+</div>
+{% endblock %} {% block main %}
+
+
+
+<!-- <hr class="featurette-divider"> -->
+
+<div class="mx-auto row featurette">
+    <div class="col-md-7 my-4" id="borderhtml">
+        <h2 class="featurette-heading">HTML:</h2>
+        <p class="lead">HTML est un language informatique dont le format de données est conçu pour représenter les pages web. Il en existe différentes versions,la dernière en date étant le HTML5. On ne peux dissocié HTML du CSS car les deux languages fonctionnes ensemble.</p>
+    </div>
+    <div class="col-md-5 my-4" id="width">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" src="{{ asset('images/html.png') }}" alt="logo-html" class="rounded-circle" data-holder-rendered="true">
     </div>
 </div>
-{% endblock %}
 
-{% block main %}
+<hr class="featurette-divider">
 
-        
-        
-                      <hr class="featurette-divider">
-              
-                      <div class="mx-auto row featurette">
-                        <div class="col-md-7" id="borderhtml">
-                          <h2 class="featurette-heading">HTML:</h2>
-                          <p class="lead">HTML est un language informatique dont le format de données est conçu pour représenter les pages web.
-                                            Il en existe différentes versions,la dernière en date étant le HTML5.
-                                            On ne peux dissocié HTML du CSS car les deux languages fonctionnes ensemble.</p>
-                        </div>
-                        <div class="col-md-5">
-                          <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto"   src="../images/html.png" alt="logo-html" class="rounded-circle" data-holder-rendered="true">
-                        </div>
-                      </div>
-                    
-                    <hr class="featurette-divider">
-                    
-                    <div class="row featurette mx-auto">
-                    <div class="col-md-7 order-md-2">
-                    <h2 class="featurette-heading">CSS:</h2>
-                    <p class="lead">C'est le language complementaire de Html.
-                                Il permet la mise en forme et en valeur du texte rediger sous HTML.
-                                Il existes différentes version, la derniere frequamment utilisé etant le CSS3.
-                                Le CSS4 est en cours de redaction.</p>
-                    </div>
-                    <div class="col-md-5 order-md-1">
-                    <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" src="../images/css.png" alt="logo-css" class="rounded-circle" data-holder-rendered="true">
-                    
-                    </div>
-                    </div>
-                    
-                    <hr class="featurette-divider">
-                    
-                      <div class="mx-auto row featurette">
-                        <div class="col-md-7" id="borderhtml">
-                          <h2 class="featurette-heading">JavaScript:</h2>
-                          <p class="lead">Javascript est un language de programmation de scripts.
-                                            Il permet la réalisation de contenu dynamique et animées.
-                                            Il peux cependant etre ignorer par certain navigateur web.
-                                            C est un language en contstante evolution.</p>
-                        </div>
-                        <div class="col-md-5">
-                          <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto"  src="../images/js.png" alt="logo-js" class="rounded-circle" data-holder-rendered="true">
-                        </div>
-                      </div>
-                    
-                    
-                      <hr class="featurette-divider">
-                    
-                      <div class="row featurette mx-auto">
-                        <div class="col-md-7 order-md-2">
-                          <h2 class="featurette-heading">JQuery:</h2>
-                          <p class="lead">jQuery est une bibliothèque JavaScript libre et multiplateforme créée pour faciliter l'écriture de scripts côté client dans le code HTML des pages web[2.
-                            Il permet entre autre de simplifier le code Javascript, il intègre Ajax et permet de modifier le CSS et d apporter des plug in.
-                            
-                            La dernière version est la 3.3.1</p>
-                        </div>
-                        <div class="col-md-5 order-md-1">
-                          <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" src="../images/jquery.png" alt="logo-css" class="rounded-circle" data-holder-rendered="true">
-                         
-                        </div>
-                      </div>
-                    
-                      <hr class="featurette-divider">
-                    
-                      <div class="mx-auto row featurette">
-                        <div class="col-md-7" id="borderhtml">
-                          <h2 class="featurette-heading">PHP:</h2>
-                          <p class="lead">PHP est un langage de script utilisé le plus souvent côté serveur : dans cette architecture, le serveurinterprète le code PHP des pages web demandées et génère du code (HTML, XHTML, CSS par exemple) et des données (JPEG, GIF, PNG par exemple) pouvant être interprétés et rendus par un navigateur. 
-                    PHP est le plus souvent couplé à un serveur Apache. Ce couplage permet de récupérer des informations issues d'une base de données, d'un système de fichiers (contenu de fichiers et de l'arborescence) ou plus simplement des données envoyées par le navigateur afin d'être interprétées ou stockées pour une utilisation ultérieure..</p>
-                        </div>
-                        <div class="col-md-5">
-                          <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto"   src="../images/php.png" alt="logo-html" class="rounded-circle" data-holder-rendered="true">
-                        </div>
-                      </div>
-                    
-                      <hr class="featurette-divider">
-                    
-                      <div class="row featurette mx-auto">
-                        <div class="col-md-7 order-md-2">
-                          <h2 class="featurette-heading">LESS:</h2>
-                          <p class="lead">Il s agit d un langage qui a pour but de simplifier et de raccourcir visuellement  le code CSS.
-                            Il peut être utilisé de manière fixe, dans un fichier CSS ou de manière dynamique en script, tout comme Javascript.
-                            La première solution restera pour autant recommandé. </p>
-                        </div>
-                        <div class="col-md-5 order-md-1">
-                          <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" src="../images/less.jpg" alt="logo-css" class="rounded-circle" data-holder-rendered="true">
-                         
-                        </div>
-                      </div>
-                    
-                      <hr class="featurette-divider">
-                    
-                      <div class="mx-auto row featurette">
-                        <div class="col-md-7" id="borderhtml">
-                          <h2 class="featurette-heading">MySQL:</h2>
-                          <p class="lead">Le couple PHP/MySQL est très utilisé par les sites webet proposé par la majorité des hébergeurs Web. Plus de la moitié des sites Web fonctionnent sous Apache, qui est le plus souvent utilisé conjointement avec PHP et MySQL.</p>
-                        </div>
-                        <div class="col-md-5">
-                          <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto"   src="../images/mysql.jpg" alt="logo-html" class="rounded-circle" data-holder-rendered="true">
-                        </div>
-                      </div>
-                    
-                      <hr class="featurette-divider">
-                    
-                      <div class="row featurette mx-auto">
-                        <div class="col-md-7 order-md-2">
-                          <h2 class="featurette-heading">Symfony:</h2>
-                          <p class="lead">
-                            Symfony est un ensemble de composants PHP ainsi qu'un framework MVC libre écrit en PHP. Il fournit des fonctionnalités modulables et adaptables qui permettent de faciliter et d’accélérer le développement d'un site web.
-                            
-                            Dernière version 4.1.1</p>
-                        </div>
-                        <div class="col-md-5 order-md-1">
-                          <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" src="../images/symfony.png" alt="logo-css" class="rounded-circle" data-holder-rendered="true">
-                         
-                        </div>
-                      </div>
-                                  <!-- /END THE FEATURETTES --> 
-                </div>
+<div class="row featurette mx-auto">
+    <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading">CSS:</h2>
+        <p class="lead">C'est le language complementaire de Html. Il permet la mise en forme et en valeur du texte rediger sous HTML. Il existes différentes version, la derniere frequamment utilisé etant le CSS3. Le CSS4 est en cours de redaction.</p>
+    </div>
+    <div class="col-md-5 order-md-1">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" src="{{ asset('images/css.png') }}" alt="logo-css" class="rounded-circle" data-holder-rendered="true">
+
+    </div>
+</div>
+
+<hr class="featurette-divider">
+
+<div class="mx-auto row featurette">
+    <div class="col-md-7" id="borderhtml">
+        <h2 class="featurette-heading">JavaScript:</h2>
+        <p class="lead">Javascript est un language de programmation de scripts. Il permet la réalisation de contenu dynamique et animées. Il peux cependant etre ignorer par certain navigateur web. C est un language en contstante evolution.</p>
+    </div>
+    <div class="col-md-5">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" src="{{ asset('images/js.png') }}" alt="logo-js" class="rounded-circle" data-holder-rendered="true">
+    </div>
+</div>
+
+
+<hr class="featurette-divider">
+
+<div class="row featurette mx-auto">
+    <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading">JQuery:</h2>
+        <p class="lead">jQuery est une bibliothèque JavaScript libre et multiplateforme créée pour faciliter l'écriture de scripts côté client dans le code HTML des pages web[2. Il permet entre autre de simplifier le code Javascript, il intègre Ajax et permet de modifier le CSS et d apporter des plug in. La dernière version est la 3.3.1</p>
+    </div>
+    <div class="col-md-5 order-md-1">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" src="{{ asset('images/jquery.png') }}" alt="logo-css" class="rounded-circle" data-holder-rendered="true">
+
+    </div>
+</div>
+
+<hr class="featurette-divider">
+
+<div class="mx-auto row featurette">
+    <div class="col-md-7" id="borderhtml">
+        <h2 class="featurette-heading">PHP:</h2>
+        <p class="lead">PHP est un langage de script utilisé le plus souvent côté serveur : dans cette architecture, le serveurinterprète le code PHP des pages web demandées et génère du code (HTML, XHTML, CSS par exemple) et des données (JPEG, GIF, PNG par exemple) pouvant être interprétés et rendus par un navigateur.  PHP est le plus souvent couplé à un serveur Apache. Ce couplage permet de récupérer des informations issues d'une base de données, d'un système de fichiers (contenu de fichiers et de l'arborescence) ou plus simplement des données envoyées par le navigateur afin d'être interprétées ou stockées pour une utilisation ultérieure..</p>
+    </div>
+    <div class="col-md-5">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" src="{{ asset('images/php.png') }}" alt="logo-html" class="rounded-circle" data-holder-rendered="true">
+    </div>
+</div>
+
+<hr class="featurette-divider">
+
+<div class="row featurette mx-auto">
+    <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading">LESS:</h2>
+        <p class="lead">Il s agit d un langage qui a pour but de simplifier et de raccourcir visuellement le code CSS. Il peut être utilisé de manière fixe, dans un fichier CSS ou de manière dynamique en script, tout comme Javascript. La première solution restera pour autant recommandé. </p>
+    </div>
+    <div class="col-md-5 order-md-1">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" src="{{ asset('images/less.jpg') }}" alt="logo-css" class="rounded-circle" data-holder-rendered="true">
+
+    </div>
+</div>
+
+<hr class="featurette-divider">
+
+<div class="mx-auto row featurette">
+    <div class="col-md-7" id="borderhtml">
+        <h2 class="featurette-heading">MySQL:</h2>
+        <p class="lead">Le couple PHP/MySQL est très utilisé par les sites webet proposé par la majorité des hébergeurs Web. Plus de la moitié des sites Web fonctionnent sous Apache, qui est le plus souvent utilisé conjointement avec PHP et MySQL.</p>
+    </div>
+    <div class="col-md-5">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" src="{{ asset('images/mysql.jpg') }}" alt="logo-html" class="rounded-circle" data-holder-rendered="true">
+    </div>
+</div>
+
+<hr class="featurette-divider">
+
+<div class="row featurette mx-auto">
+    <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading">Symfony:</h2>
+        <p class="lead">
+            Symfony est un ensemble de composants PHP ainsi qu'un framework MVC libre écrit en PHP. Il fournit des fonctionnalités modulables et adaptables qui permettent de faciliter et d’accélérer le développement d'un site web. Dernière version 4.1.1</p>
+    </div>
+    <div class="col-md-5 order-md-1">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" src="{{ asset('images/symfony.png') }}" alt="logo-css" class="rounded-circle" data-holder-rendered="true">
+
+    </div>
+
+</div>
+<!-- <div class="text-right py-4 mx-5">
+                          <a href="#toph2" class="backtotop"data-scroll-to="" data-scroll-to-offset="50">Back to top</a>
+                      </div> -->
+
+<!-- /END THE FEATURETTES -->
+</div>
 
 
 
-      
-       
-    
-       
 
-  
-</body>
-{% endblock %}
 
-{% endblock %}
+
+
+
+
+{% endblock %} {% endblock %}

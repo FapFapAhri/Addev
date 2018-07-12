@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Service\Recaptcha;
 use App\Entity\User;
 use App\Entity\Advert;
+use App\Entity\JobRequest;
+use App\Entity\StatusJob;
 use \DateTime;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException; 
@@ -22,7 +24,29 @@ public function index(){
     $dateNow = new DateTime();
     $advertRepository = $this->getDoctrine()->getRepository(Advert::class);
      $lastAd = $advertRepository -> lastThreeAdverts();
+     $statusjobRepository = $this->getDoctrine()->getRepository(StatusJob::class);
+    $status=  $statusjobRepository -> findAll();
+    if (!$status){
+        // on fixe le nombre de status (dans StatusJob)
+        $nbstatus=5;
+        for($i=1; $i<=$nbstatus; $i++){
+        $statusjob[$i-1] = new Statusjob();// on créer le nombre de nouveau objet qu'on s'est fixé avec $nbstatus.
+        }
 
+        $statusjob[0]->setLabel('En Attente');
+        $statusjob[1]->setLabel('Refusé');
+        $statusjob[2]->setLabel('Accepté');
+        $statusjob[3]->setLabel('Projet Clos');
+        $statusjob[4]->setLabel('A été Noté');
+
+        $entityManager = $this->getdoctrine()->getManager();
+
+        for($i=1; $i<=$nbstatus; $i++){
+        $entityManager->persist($statusjob[$i-1]);
+        }
+        $entityManager->flush();
+
+    }
     if ($lastAd){ 
         foreach ($lastAd as $lastDate) {
              $dateToCompare = $lastDate->getPostDate();
@@ -67,15 +91,18 @@ public function index(){
             }
 
             if(!preg_match('#^[a-z]{2,60}$#i', $name)){
-                $errors[] = 'Nom incorrect';
+                $errors[] = 'Nom incorrect (lettres autorisés seulement)';
             }
 
             if(!preg_match('#^[a-z]{2,60}$#i', $firstname)){
-                $errors[] = 'Prenom incorrect';
+                $errors[] = 'Prenom incorrect (lettres autorisés seulement)';
             }
 
             if(!preg_match('#^.{2,300}$#', $password)){
                 $errors[] = 'Mot de passe incorrect';
+            }
+            if(!preg_match('#^.{2,300}$#', $password)){
+                $errors[] = 'format confirmation invalide';
             }
 
             if($password != $copassword){
@@ -125,11 +152,11 @@ public function index(){
                    // Puis on "execute" pour que tout soit enregistré dans la base de donnée.
                     $entityManager->flush();
 
-                    // ceci c'est un dump pour la simulation activation compte
-                    dump($this->generateUrl('activation', array(
-                        'id' => $user->getId(),
-                        'token' => $user->getActivationToken()
-                    )));
+                    // // ceci c'est un dump pour la simulation activation compte
+                    // dump($this->generateUrl('activation', array(
+                    //     'id' => $user->getId(),
+                    //     'token' => $user->getActivationToken()
+                    // )));
 
 
 
@@ -146,15 +173,15 @@ public function index(){
              
         
         if(isset($errors)){
-           
+            // return $this->json( array('success' => false,'errors' => $errors ) ) ;
             return $this->render('register.html.twig', array("errors" => $errors));
         }
         
         if(isset($success)){
-            
+            // return $this->json( array('success' => true ) ) ;
             return $this->render('register.html.twig', array("success" => $success));
         }
-        
+        // return $this->json( array('success' => true ) ) ;
         return $this->render('register.html.twig');
     }
     
@@ -191,7 +218,7 @@ public function index(){
         if($user && $user->getActivationToken() == $token && $user->getActive() == false){
 
             $user -> setActive(1); // On modifie le champ concernant l'activation 0 désactivé et 1 activé
-            $entityManager = $this->getDoctrine()->getManager(); 
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush(); 
             
             return $this->render('activation.html.twig'); 
@@ -237,12 +264,12 @@ public function index(){
                 ->getRepository(User::class);
                 $author= $userRepository->findOneById($id);
 
-                //hydratation de l'objet User.
+                //hydratation de l'objet Advert.
                 $advert->setTitle($title);
                 $advert->setContent($content);
                 $advert->setContractType($contract);
                 $advert->setPostDate(new DateTime);
-                $advert->setAuthor($author); // author est un objet
+                $advert->setAuthor($author); // author est un objet qui désigne en réalité un User
 
                 $entityManager->persist($advert);
 
@@ -267,12 +294,38 @@ public function index(){
     */
     public function displayAdvert(Request $request, $id){
 
-        $advertRepo= $this->getDoctrine()
-        ->getRepository(Advert::class);
-        $advert = $advertRepo->findOneById($id);
+        $session = $this->get('session');
+        $usersession = $session->get('account');
+
+
+        $advertRepo= $this->getDoctrine()->getRepository(Advert::class);
+        $advert = $advertRepo->findOneById((int)$id);
+        if($this->get('session')->has('account')){
+            
+        $userRepo= $this->getDoctrine()->getRepository(User::class);
+        $user = $userRepo->findOneByEmail($usersession->getEmail());
+      
+
+        $jrRepo= $this->getDoctrine()->getRepository(JobRequest::class);
+        $jobs = $jrRepo->findAll();
+        
+        foreach ($jobs as $job){
+
+
+            if($job->getAuthor()->getId()==$usersession->getId() && $job->getAdvert()->getId()== (int)$id){
+                $jobRequestSelected[] = $job;
+            }
+        }
+       
+        if (isset($jobRequestSelected)){
+
+            return $this->render('advert.html.twig', array("advert" => $advert,"jobs"=> $jobRequestSelected));
+            
+        }
+           
+        }
 
         return $this->render('advert.html.twig', array("advert" => $advert));
-        
     }
 
  
@@ -282,11 +335,99 @@ public function index(){
     public function adverts(){
 
         $advertRepo= $this->getDoctrine()->getRepository(Advert::class);
-        $adverts = $advertRepo->findAll();
+        // $adverts = $advertRepo->findAll();
+         $adverts = $advertRepo->descAdverts();
+
+        if($this->get('session')->has('account')){
+
+            $session = $this->get('session');
+            $usersession = $session->get('account');
+            
+            $jrRepo= $this->getDoctrine()->getRepository(JobRequest::class);
+            $jobs = $jrRepo->findAll();
+
+           
+            if (!empty($jobs)){
+                foreach($jobs as $job){
+                    if ($job->getStatus()->getId()==5 || $job->getStatus()->getId() == 4 ){
+                        $jobClosed[]=$job;
+                    }
+                }
+
+                dump($session->get('account'));
+            }
+
+           
+           
+           if (!isset($jobs)){
+                return $this->render('adverts.html.twig', array("adverts" => $adverts));
+           }else{
+
+            if (isset($jobClosed)){
+                return $this->render('adverts.html.twig', array("adverts" => $adverts, "jobs"=> $jobs,"jobClosed"=>$jobClosed));
+            }
+           
+
+           }
+
+           
+               
+            
+
+            
+        }
+
         return $this->render('adverts.html.twig', array("adverts" => $adverts));
 
     }
+    /**
+     * @Route("/changemail/", name="changemail")
+     */
+    public function changemail(){
 
+        if(!$this->get('session')->has('account')){
+            throw new AccessDeniedHttpException('Vous n\'est pas connecté');
+        }
+
+        if (!$this->get('session')->has('changemail')){
+            // si la personne a déjà demandé un changement de mail par son adresse mail, on n'exécute
+
+                $session = $this->get('session');
+                $usersession = $session->get('account');
+                $mailsession = $usersession->getEmail();
+
+
+                $ury = $this->getDoctrine()->getRepository(User::class);
+                $user1 = $ury->findByEmail($mailsession);
+            
+                
+              
+          
+               $entityManager = $this->getDoctrine()->getManager();
+                
+                $this->get('session')->set('changemail',true);
+                $token = md5(rand().time().uniqid());
+                // $user1->setToken($token);
+               
+
+              
+                $entityManager->persist($user1);
+                $entityManager->flush();
+                $success[]="Un mail de confirmation a été envoyé à votre boîte mail ";
+                $success[]="[/!\simulation - en réalité, l'url n'apparait pas / sécurité // ]";
+                $success[]=$this->generateUrl('api_editmail', array(
+                    'id' => $usersession->getId(),
+                    'token' => $token
+                ));
+  
+                
+                return $this->render('changemail.html.twig', array('success' => $success));
+        }
+
+
+        return $this->render('changemail.html.twig');
+
+    }
 
     
     /**
@@ -322,7 +463,7 @@ public function index(){
             }
 
             if(!preg_match("#^.{2,30000}$#", $content)){
-                $errors[] = "Contenu ( 2 à 30 000 caractères)";
+                $errors[] = "Contenu invalide ( 2 à 30 000 caractères)";
             }
 
             if(!isset($errors)){
@@ -382,7 +523,6 @@ public function index(){
      */
     public function faq(){
 
-        // dump($this->get('session')->get('account'));
         return $this->render('faq.html.twig');
     }
 
@@ -391,9 +531,54 @@ public function index(){
      */
     public function info(){
         
-        // dump($this->get('session')->get('account'));
         return $this->render('info.html.twig');
     }
 
+    /**
+     * @Route("/project-manager/", name="project")
+     */
+    public function gotoProjectManager(){
+
+        // vérification 
+        if(!$this->get('session')->has('account')){
+            throw new AccessDeniedHttpException('Vous n\'est pas connecté');
+        }
+       
+        $customer = $this->get('session')->get('account');
+        // if($this->get('session')->get('account')->getAdminLevel() < 1){
+        //     throw new AccessDeniedHttpException('Vous n\'êtes pas modérateur ou administrateur');
+        // }
+
+        $ar = $this->getDoctrine()->getRepository(Advert::class);
+        $authoradvert = $ar->findByAuthor($customer);
+       
+        
+        if(!$authoradvert){
+            $errors[] = "Vous n'avez publié aucune annonce";
+         }
+
+         if(!isset($errors)){
+            $jobr = $this->getDoctrine()->getRepository(JobRequest::class);
+            $jobrequest = $jobr->findBy(
+                ['advert' => $authoradvert]
+            );
+            
+            return $this->render('projectmanager.html.twig',array('jobs'=>$jobrequest));
+         }
+         dump($this->get('session')->all());
+        // $jobr = $this->getDoctrine()->getRepository(JobRequest::class);
+
+        // $jobrequest = $jobr->findBy(
+        //     ['advert_id' => $]
+        // );
+        // $jobrequest = $jobr->findByAdvertId();
+
+
+
+        
+        // Si un au moins un utilisateur est trouvé par rapport à une annonce, toutes les informations est envoyé sur la page projet
+        return $this->render('projectmanager.html.twig');
+
+    }
 }
 

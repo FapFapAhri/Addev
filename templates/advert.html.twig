@@ -1,102 +1,148 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-<body class="color">
-	{% block header%}
-
-<div class="intro py-4 py-lg-8 position-relative text-white bg-h1">
-    <div class="bg-overlay-primary">
-        <img src="{{ asset('images/bleu.jpg') }}" class="img-fluid img-cover" alt="Robust UI Kit" style=" width: 100%; display: block;" >
-    </div>
-        <div class="intro-content py-6 text-center">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto text-center">
-                        <h1 class="my-3 display-4 d-none d-lg-inline-block">Voir une Annonce</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+{% extends 'base.html.twig' %} {% block h1 %}Votre Annonce{% endblock %} {% block title %}Votre Annonce{% endblock %} {% block body %} {% block header%}
 
 
-    
+
+<div aria-label="breadcrumb">
+    <ol class="breadcrumb mt-0">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+        <li class="breadcrumb-item "><a href="{{ path('adverts') }}">Annonces</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Votre Annonce</a></li>
+    </ol>
+</div>
 
 <!-- slogan -->
-        <div class="jumbotron">
-            <div class="container">
-                <h2>Voici l'Annonce demandée</h2>
-                <p>On espère qu'elle vous plaira </p>
 
-<!--
-                <div id="scroll" style="position: fixed; top: 90%; right: 5%;" class="clicked">
-                    <span class="">↓</span>
+<div class="jumbotron">
+
+    <h2>Voici l'Annonce demandée</h2>
+    <p class="soustext">On espère qu'elle vous plaira </p>
+
+</div>
+
+{% endblock %} {% if success is defined %}
+<div class="alert alert-success col-12" role="alert">
+    {{ success }}
+</div>
+{% endif %} {% if errors is defined and not null %}
+<div class="alert alert-danger col-12" role="alert">
+    {{ errors }}
+</div>
+{% endif %} {% if advert is null %}
+<div class="col-12 alert alert-danger" role="alert">
+    Annonce inexistant<a href="{{path('adverts')}}"> (Retour)</a>
+</div>
+
+
+
+{% else %}
+<div class="row msg mt-4">
+    <div class="col-8 offset-2 col-sm-6 offset-sm-3 col-md-4 offset-sm-4 col-lg-4 offset-lg-4 bs">
+        {% if advert.contractType == "cdi" %}
+
+        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 300px; width: 100%; display: block;" src=" {{ asset('images/cdi.jpg') }}" data-holder-rendered="true"> {% endif %} {% if advert.contractType == "cdd" %}
+
+        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 300px; width: 100%; display: block;" src="{{ asset('images/cdd.png') }}" data-holder-rendered="true"> {% endif %} {% if advert.contractType == "intérim" %}
+
+        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 300px; width: 100%; display: block;" src=" {{ asset('images/interim.jpg') }}" data-holder-rendered="true"> {% endif %} {% if advert.contractType == "freelance" %}
+
+        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 300px; width: 100%; display: block;" src="{{ asset('images/freelance.png') }}" data-holder-rendered="true"> {% endif %}
+        <div class="card mb-4 box-shadow">
+
+            <div class="card-body">
+                <p class="card-text">Annonces N°: {{advert.id}}</p>
+                <p class="card-text">Titre: {{advert.title}}</p>
+                <p class="card-text">Description: {{advert.content}}</p>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Déposé par: {{advert.author.name}}</small>
+                    <small class="text-muted">Le {{advert.postdate|date('d /m /Y')}}.</small>
                 </div>
--->
+                {% if session.get('account') is not null %} {% if advert.author.id == session.get('account').id %}
+
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">Supprimer</button>
+                <a id="editBtn" href="{{ path('editadvert',{ id: advert.id }) }}" class="btn btn-secondary">Editer</a> {% else %}
+                <p class="col-md col-12">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#clientModal"> contact</button>
+                </p>
+
+
+                {% endif %} {% else %}
+                <p class="col-md col-12">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#clientModal"> contact</button>
+                </p>
+
+                {% endif %}
+
+
             </div>
         </div>
-	{% endblock %}
-	<div class="container">
-	{% if advert is null %}
-
-			<a style="color:red" href="{{path('adverts')}}" > Annonce inexistant (retour)</a>
+    </div>
 
 
-	{% else %}
-	<div class="row">
-	<div class="col-md-4 container">
-			<div class="card mb-4 box-shadow">
-				<img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22200%22%20height%3D%22250%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20250%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16426e2ff6c%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A13pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16426e2ff6c%22%3E%3Crect%20width%3D%22200%22%20height%3D%22250%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2256.203125%22%20y%3D%22131%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true">
-				<div class="card-body">
-					<p class="card-text">Titre: {{advert.title}}</p>
-					<p class="card-text">Description: {{advert.content}}</p>
-					
-					<div class="d-flex justify-content-between align-items-center">
-						<small class="text-muted">Déposé par: {{advert.author.name}}</small>
-						<small class="text-muted">Le {{advert.postdate|date('d /m /Y')}}.</small>
-					</div>
-					{% if session.get('account') is not null %}
-			{% if advert.author.id == session.get('account').id %}
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Supprimer l'annonce ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" data-link="{{path('api_deleteadvert', {id: advert.id})}}" data-retour="{{path('adverts')}}" class="btn btn-danger" id="delete-advert">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row d-flex justify-content-center">
+    <a href="{{ path('adverts') }}" class="btn btn-primary btn-lg btn-block col-4 ">Retour</a>
+</div>
 
-			<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">Supprimer</button>
-				
-				<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Supprimer l'annonce ?</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						</div>
-						<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-						<button type="button" data-link="{{path('api_deleteadvert', {id: advert.id})}}" data-retour="{{path('adverts')}}" class="btn btn-danger" id="delete-advert">Supprimer</button>
-						</div>
-					</div>
-					</div>
-				</div>
-			<a id="editBtn " href="{{ path('editadvert',{ id: advert.id }) }}" class="btn btn-secondary">Editer</a>
 
-			{% endif %}
-		{% endif %}
-				</div>
-			</div>
-		</div>
-
-		
-	</div>
-
-		
-		
-		<a href="{{ path('adverts') }}" class="btn btn-primary ">Retour</a>
-			
 
 {% endif %}
 
-</div>
-</body>
+<!-- Modal -->
+<div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="clientModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="clientModalTitle">Contacter le client</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+            </div>
+            <div class="modal-body">
+                <p>Vous pouvez contacter le client aux:</p>
+                <p>Telephone: {% if advert.author.phone is null %} Pas de numéro.{% else %}{{advert.author.phone}}{% endif %}</p>
+                <p>Email: {{advert.author.email}}</p>
+
+
+            </div>
+            <div class="modal-footer">
+
+
+                {% if session.get('account') is not null %} 
+                    {% if advert.author.id != session.get('account').id %}
+                            {% if jobs is not defined %}
+
+                             <a class="btn btn-primary" href="{{path('api_apply', {idAdvert:advert.id, idAdvertAuthor:advert.author.id,status:1})}}">Postuler</a >
+
+							{% endif %}
+					{% endif %}
+				{% endif %}
+
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+				
+			</div>
+		</div>
+		</div>
+	</div>
+	
+
 {% endblock %}
 
 {% block javascripts %}
